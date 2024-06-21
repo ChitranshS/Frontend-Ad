@@ -40,7 +40,7 @@ const Home = () => {
         <div className="flex items-center bg-white border border-gray-300 rounded py-2 px-3 shadow-sm">
           <input
             type="text"
-            placeholder="Enter a URL"
+            placeholder="Enter product URL"
             value={link}
             onChange={(e) => setLink(e.target.value)}
             className="appearance-none bg-white border-none w-full text-gray-700 py-2 px-2 leading-tight focus:outline-none"
