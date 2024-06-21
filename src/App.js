@@ -6,7 +6,7 @@ import Loader from './components/Loader';
 function App() {
   return (
     <Router>
-      <div className="min-h-screen flex flex-col bg-white">
+      <div className="min-h-screen flex flex-col bg-gray-100">
         <main className="flex-grow flex items-center justify-center">
           <Routes>
             <Route path="/" element={<Home />} />
