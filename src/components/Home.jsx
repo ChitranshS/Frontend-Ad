@@ -13,6 +13,10 @@ const Home = () => {
       setError('Please provide a valid link');
       return;
     }
+    if (!/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w.-](?:\/[\w.-]*)*$/gi.test(link)) {
+      setError('Please enter a valid URL');
+      return;
+    }
     navigate('/ad-copy');
     try {
       const response = await axios.get(

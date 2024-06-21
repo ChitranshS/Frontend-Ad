@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
-import axios from 'axios';
+let startTime = Date.now();
 
 const adCopyLines = [
   "Crafting compelling messages... please wait.",
@@ -29,49 +29,20 @@ const adCopyLines = [
 const Loader = () => {
   const [adCopy, setAdCopy] = useState('');
   const [fade, setFade] = useState(true);
-  const [response, setResponse] = useState(null);
-  const [error, setError] = useState(null); // Added state for error handling
   const location = useLocation();
   const navigate = useNavigate();
-  const url = location.state?.url;
-
+  const response = location.state?.response;
+  startTime = Date.now();
   useEffect(() => {
-    if (url) {
-      fetchAdCopy(url);
-    }
-  }, [url]);
+    const generateAdCopy = () => {
+      setFade(false);
+      setTimeout(() => {
+        const randomIndex = Math.floor(Math.random() * adCopyLines.length);
+        setAdCopy(adCopyLines[randomIndex]);
+        setFade(true);
+      }, 1000);
+    };
 
-  const fetchAdCopy = async (url) => {
-    try {
-      const response = await axios.get(
-        `https://76loymajsa2d3m6bmsgzsmuvni0zgaaw.lambda-url.us-east-1.on.aws/?link=${url}`
-      );
-      setResponse(response.data);
-      setError(null); // Clear error state if successful
-    } catch (error) {
-      console.error('Error fetching ad copy:', error);
-      setError(`Failed to load ad copy. Error code: ${error.response?.status}`); // Set error state with response code
-    }
-  };
-
-  const handleRegenerate = () => {
-    if (url) {
-      setResponse(null); // Clear current response
-      setError(null); // Clear error state
-      fetchAdCopy(url);
-    }
-  };
-
-  const generateAdCopy = () => {
-    setFade(false);
-    setTimeout(() => {
-      const randomIndex = Math.floor(Math.random() * adCopyLines.length);
-      setAdCopy(adCopyLines[randomIndex]);
-      setFade(true);
-    }, 1000);
-  };
-
-  useEffect(() => {
     generateAdCopy();
     const interval = setInterval(generateAdCopy, 8000);
     return () => clearInterval(interval);
@@ -84,7 +55,7 @@ const Loader = () => {
       let currentCard = [];
 
       adCopySections.forEach((section, index) => {
-        if (section.startsWith("**") && !section.includes("**Headline:**") && !section.includes("**Subheadline:**") && !section.includes("**Body:**") && !section.includes("**Engagement Hooks:**") ) {
+        if (section.startsWith("**") && !section.includes("**Headline:**") && !section.includes("**Subheadline:**") && !section.includes("**Body:**") && !section.includes("**Engagement Hooks:**")) {
           if (currentCard.length > 0) {
             cards.push(currentCard);
             currentCard = [];
@@ -108,6 +79,15 @@ const Loader = () => {
     return null;
   };
 
+  useEffect(() => {
+    if (response) {
+      const endTime = Date.now();
+      
+      const timeTaken = (endTime - startTime) / 1000; // Convert to seconds
+      console.log(`Time taken to generate response: ${timeTaken.toFixed(2)}s`);
+    }
+  }, [response]);
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       {response ? (
@@ -116,12 +96,9 @@ const Loader = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
             {renderAdCopy()}
           </div>
-          <div className="flex justify-center mt-6 space-x-3">
+          <div className="flex justify-center mt-6">
             <button onClick={() => navigate('/')} className="p-2 bg-black text-white rounded">
               Go Back
-            </button>
-            <button onClick={handleRegenerate} className="p-2 bg-black text-white rounded">
-              Regenerate
             </button>
           </div>
         </div>
@@ -133,7 +110,6 @@ const Loader = () => {
           <p className={`mt-4 text-lg font-semibold text-gray-700 transition-opacity duration-500 ${fade ? 'opacity-100' : 'opacity-0'}`}>
             {adCopy}
           </p>
-          {error && <p className="mt-4 text-lg font-semibold text-red-500">{error}</p>} // Display error message if error state is set
         </div>
       )}
     </div>
