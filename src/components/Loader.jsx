@@ -89,7 +89,7 @@ const Loader = () => {
   }, [response]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen bgkk">
       {response ? (
         <div className="w-full max-w-7xl p-4">
           <h3 className="text-4xl font-bold mt-6 mb-6 text-center">Generated Copy</h3>
