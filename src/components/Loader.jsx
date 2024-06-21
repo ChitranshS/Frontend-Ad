@@ -72,7 +72,7 @@ const Loader = () => {
       }
 
       return cards.slice(1).map((cardContent, index) => (
-        <div key={index} className="bg-white p-6 rounded-lg shadow-lg border border-gray-200 mb-4">
+        <div key={index} className="footer-bg p-6 rounded-lg shadow-xl mb-4">
           {cardContent}
         </div>
       ));
@@ -90,25 +90,25 @@ const Loader = () => {
   }, [response]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen ">
+    <div className="flex items-center justify-center min-h-screen home-bg text-gray-200 ">
       {response ? (
-        <div className="w-full max-w-7xl p-4">
-          <h3 className="text-4xl font-bold mt-6 mb-6 text-center">Generated Copy</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
+        <div className="w-full max-w-8xl p-10">
+          <h3 className="text-4xl font-bold mt-6 mb-10 text-center ">Generated Copy</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 m-20 ">
             {renderAdCopy()}
           </div>
           <div className="flex justify-center mt-6">
-            <button onClick={() => navigate('/')} className="p-2 bg-black text-white rounded">
+            <button onClick={() => navigate('/')} className="p-4 buttonkk text-gray-900 font-semibold shadow-lg rounded">
               Go Back
             </button>
           </div>
         </div>
       ) : (
-        <div className="bg-white p-10 rounded-lg shadow-lg text-center max-w-md w-full border border-gray-200">
+        <div className="footer-bg p-10 rounded-lg shadow-lg text-center max-w-md w-full ">
           <div className="flex justify-center mb-4">
             <div className="loader"></div>
           </div>
-          <p className={`mt-4 text-lg font-semibold text-gray-700 transition-opacity duration-500 ${fade ? 'opacity-100' : 'opacity-0'}`}>
+          <p className={`mt-5 text-lg font-semibold text-gray-200 transition-opacity duration-500 ${fade ? 'opacity-100' : 'opacity-0'}`}>
             {adCopy}
           </p>
         </div>

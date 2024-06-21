@@ -1,10 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 .loader {
-  border: 8px solid #f3f3f3;
+  border: 8px solid white;
   border-radius: 50%;
-  border-top: 8px solid black;
+  border-top: 8px solid #6ad8d3;
   width: 60px;
   height: 60px;
   -webkit-animation: spin 2s linear infinite;
@@ -20,6 +21,26 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-.bgkk{
-  background-color: #cdcdc0;
+.loader-bg{
+  background-color: #2d6c77;
 }
+
+.home-bg{
+  background-color: #20515a;
+}
+.footer-bg{
+  background-color: #0b262b;
+}
+.bukk{
+  background-color: #20515a;
+  
+}
+.buttonkk
+{
+  background-color: #6ad8d3
+}
+.lkk{
+  
+  background-color: #c2b9ae;
+}
+
