@@ -30,6 +30,7 @@ const Loader = () => {
   const [adCopy, setAdCopy] = useState('');
   const [fade, setFade] = useState(true);
   const [response, setResponse] = useState(null);
+  const [error, setError] = useState(null); // Added state for error handling
   const location = useLocation();
   const navigate = useNavigate();
   const url = location.state?.url;
@@ -46,14 +47,17 @@ const Loader = () => {
         `https://76loymajsa2d3m6bmsgzsmuvni0zgaaw.lambda-url.us-east-1.on.aws/?link=${url}`
       );
       setResponse(response.data);
+      setError(null); // Clear error state if successful
     } catch (error) {
       console.error('Error fetching ad copy:', error);
+      setError(`Failed to load ad copy. Error code: ${error.response?.status}`); // Set error state with response code
     }
   };
 
   const handleRegenerate = () => {
     if (url) {
       setResponse(null); // Clear current response
+      setError(null); // Clear error state
       fetchAdCopy(url);
     }
   };
@@ -129,6 +133,7 @@ const Loader = () => {
           <p className={`mt-4 text-lg font-semibold text-gray-700 transition-opacity duration-500 ${fade ? 'opacity-100' : 'opacity-0'}`}>
             {adCopy}
           </p>
+          {error && <p className="mt-4 text-lg font-semibold text-red-500">{error}</p>} // Display error message if error state is set
         </div>
       )}
     </div>
