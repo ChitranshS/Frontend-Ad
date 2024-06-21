@@ -33,8 +33,8 @@ const Home = () => {
     <div className="flex flex-col items-center justify-center h-screen bgkk">
       {error && <div className="bg-red-100 border-l-4 border-red-500 text-red-7000 p-4 mb-4 duration-1000 animate-pulse" role="alert">{error}</div>}
       <div className="text-center mb-12 transition-all duration-500">
-        <h1 className="text-5xl font-extrabold mb-4 text-[#464645]">Revolutionize Your Ad Copy with GoMarble</h1>
-        <p className="text-lg text-[#464645]">Enter a product link and let our tool craft compelling ad copy for maximum engagement.</p>
+        <h1 className="text-5xl font-extrabold mb-4 text-[#464645]">Ad Copy Generator Tool</h1>
+        <p className="text-lg text-[#464645]">Enter a product link and create an ad copy for maximum engagement.</p>
       </div>
       <form onSubmit={handleSubmit} className="w-full max-w-lg">
         <div className="flex items-center bg-white border border-gray-300 rounded py-2 px-3 shadow-sm">
