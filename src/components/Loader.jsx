@@ -27,6 +27,7 @@ const adCopyLines = [
 const Loader = () => {
   const [adCopy, setAdCopy] = useState('');
   const [fade, setFade] = useState(true);
+  const [timeTaken, setTimeTaken] = useState(0); // Added state for time taken
   const location = useLocation();
   const navigate = useNavigate();
   const response = location.state?.response;
@@ -34,10 +35,13 @@ const Loader = () => {
   useEffect(() => {
     const generateAdCopy = () => {
       setFade(false); // Start fading out
+      const startTime = performance.now(); // Start measuring time
       setTimeout(() => {
         const randomIndex = Math.floor(Math.random() * adCopyLines.length);
         setAdCopy(adCopyLines[randomIndex]);
         setFade(true); // Start fading in
+        const endTime = performance.now(); // Stop measuring time
+        setTimeTaken(endTime - startTime); // Calculate time taken
       }, 500); // 500ms fade out duration
     };
 
@@ -47,28 +51,60 @@ const Loader = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const renderAdCopy = () => {
+    if (response && response.ad_copy) {
+      const adCopySections = response.ad_copy.split("\n\n");
+      const cards = [];
+      let currentCard = [];
+
+      adCopySections.forEach((section, index) => {
+        if (section.startsWith("**")) {
+          if (currentCard.length > 0) {
+            cards.push(currentCard);
+            currentCard = [];
+          }
+          currentCard.push(<h4 key={index} className="font-bold mb-2">{section.replace(/\*\*/g, '')}</h4>);
+        } else {
+          currentCard.push(<p key={index} className="mb-2">{section}</p>);
+        }
+      });
+
+      if (currentCard.length > 0) {
+        cards.push(currentCard);
+      }
+
+      return cards.map((cardContent, index) => (
+        <div key={index} className="bg-white p-6 rounded-lg shadow-lg border border-gray-200 mb-4 w-full md:w-1/2 lg:w-1/3">
+          {cardContent}
+        </div>
+      ));
+    }
+    return null;
+  };
+
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="bg-white p-10 rounded-lg shadow-lg text-center max-w-md w-full border border-gray-200">
-        {response ? (
-          <div>
-            <h3 className="text-xl font-bold mb-4">Response Received:</h3>
-            <p>{response.message}</p>
-            <button onClick={() => navigate('/')} className="mt-4 p-2 bg-blue-600 text-white rounded">
+    <div className="flex flex-wrap items-start justify-center h-screen bg-gray-100 p-4 overflow-auto">
+      {response ? (
+        <div className="w-full flex flex-wrap justify-center">
+          <h3 className="w-full text-xl font-bold mb-4 text-center">Ad Copy Generated:</h3>
+          {renderAdCopy()}
+          <div className="w-full flex justify-center mt-4">
+            <button onClick={() => navigate('/')} className="p-2 bg-blue-600 text-white rounded">
               Go Back
             </button>
           </div>
-        ) : (
-          <div>
-            <div className="flex justify-center mb-4">
-              <div className="loader"></div>
-            </div>
-            <p className={`mt-4 text-lg font-semibold text-gray-700 transition-opacity duration-500 ${fade ? 'opacity-100' : 'opacity-0'}`}>
-              {adCopy}
-            </p>
+          <p className="text-gray-600 mt-4">Time taken: {timeTaken.toFixed(2)} ms</p> {/* Display time taken */}
+        </div>
+      ) : (
+        <div className="bg-white p-10 rounded-lg shadow-lg text-center max-w-md w-full border border-gray-200">
+          <div className="flex justify-center mb-4">
+            <div className="loader"></div>
           </div>
-        )}
-      </div>
+          <p className={`mt-4 text-lg font-semibold text-gray-700 transition-opacity duration-500 ${fade ? 'opacity-100' : 'opacity-0'}`}>
+            {adCopy}
+          </p>
+        </div>
+      )}
     </div>
   );
 };
