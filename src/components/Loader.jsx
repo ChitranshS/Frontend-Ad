@@ -51,6 +51,7 @@ const Loader = () => {
   const renderAdCopy = () => {
     if (response && response.ad_copy) {
       const adCopySections = response.ad_copy.split("\n\n");
+      console.log(response.prompt);
       const cards = [];
       let currentCard = [];
 

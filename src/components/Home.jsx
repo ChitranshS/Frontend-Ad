@@ -6,21 +6,22 @@ const Home = () => {
   const [link, setLink] = useState('');
   const navigate = useNavigate();
   const [error, setError] = useState('');
-
+  let sending_link = link;
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!link) {
-      setError('Please provide a valid link');
+      setError('Please enter a link');
       return;
     }
-    if (!/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w.-](?:\/[\w.-]*)*$/gi.test(link)) {
-      setError('Please enter a valid URL');
-      return;
-    }
+    // Regular expression to check if the link starts with "https://www."
+if (!/^https:\/\/www\./i.test(sending_link)) {
+  // If it doesn't, add "https://www." at the beginning of the link
+  sending_link = "https://www." + sending_link.replace(/^(?:http(s)?:\/\/)?(?:www\.)?/i, '');
+}
     navigate('/ad-copy');
     try {
       const response = await axios.get(
-        `https://76loymajsa2d3m6bmsgzsmuvni0zgaaw.lambda-url.us-east-1.on.aws/?link=${link}`
+        `https://76loymajsa2d3m6bmsgzsmuvni0zgaaw.lambda-url.us-east-1.on.aws/?link=${sending_link}`
       );
       navigate('/ad-copy', { state: { response: response.data } }); // Pass response data to Loader component
     } catch (error) {
