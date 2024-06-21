@@ -6,22 +6,17 @@ const Home = () => {
   const [link, setLink] = useState('');
   const navigate = useNavigate();
   const [error, setError] = useState('');
-  let sending_link = link;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!link) {
-      setError('Please enter a link');
+      setError('Please provide a valid link');
       return;
     }
-    // Regular expression to check if the link starts with "https://www."
-if (!/^https:\/\/www\./i.test(sending_link)) {
-  // If it doesn't, add "https://www." at the beginning of the link
-  sending_link = "https://www." + sending_link.replace(/^(?:http(s)?:\/\/)?(?:www\.)?/i, '');
-}
     navigate('/ad-copy');
     try {
       const response = await axios.get(
-        `https://76loymajsa2d3m6bmsgzsmuvni0zgaaw.lambda-url.us-east-1.on.aws/?link=${sending_link}`
+        `https://76loymajsa2d3m6bmsgzsmuvni0zgaaw.lambda-url.us-east-1.on.aws/?link=${link}`
       );
       navigate('/ad-copy', { state: { response: response.data } }); // Pass response data to Loader component
     } catch (error) {
@@ -31,20 +26,20 @@ if (!/^https:\/\/www\./i.test(sending_link)) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bgkk">
-      {error && <div className="bg-red-100 border-l-4 border-red-500 text-red-7000 p-4 mb-4 duration-1000 animate-pulse" role="alert">{error}</div>}
+    <div className="flex flex-col items-center justify-center h-screen bg-white">
+      {error && <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 duration-1000 animate-pulse" role="alert">{error}</div>}
       <div className="text-center mb-12 transition-all duration-500">
-        <h1 className="text-5xl font-extrabold mb-4 text-[#464645]">Ad Copy Generator Tool</h1>
-        <p className="text-lg text-[#464645]">Enter a product link and create an ad copy for maximum engagement.</p>
+        <h1 className="text-5xl font-extrabold mb-4">Revolutionize Your Ad Copy with GoMarble</h1>
+        <p className="text-lg text-gray-600">Enter a product link and let our tool craft compelling ad copy for maximum engagement.</p>
       </div>
       <form onSubmit={handleSubmit} className="w-full max-w-lg">
-        <div className="flex items-center bg-white border border-gray-300 rounded py-2 px-3 shadow-sm">
+        <div className="flex items-center bg-gray-100 border border-gray-300 rounded py-2 px-3 shadow-sm">
           <input
             type="text"
-            placeholder="Enter product URL"
+            placeholder="Enter a URL"
             value={link}
             onChange={(e) => setLink(e.target.value)}
-            className="appearance-none bg-white border-none w-full text-gray-700 py-2 px-2 leading-tight focus:outline-none"
+            className="appearance-none bg-transparent border-none w-full text-gray-700 py-2 px-2 leading-tight focus:outline-none"
           />
           <button
             type="submit"
