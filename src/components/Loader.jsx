@@ -27,7 +27,7 @@ const adCopyLines = [
 const Loader = () => {
   const [adCopy, setAdCopy] = useState('');
   const [fade, setFade] = useState(true);
-  const [timeTaken, setTimeTaken] = useState(0); // Added state for time taken
+  const [timeTaken, setTimeTaken] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
   const response = location.state?.response;
@@ -83,7 +83,7 @@ const Loader = () => {
   };
 
   return (
-    <div className="flex flex-wrap items-start justify-center h-screen bg-gray-100 p-4 overflow-auto">
+    <div className="flex items-center justify-center h-screen bg-gray-100">
       {response ? (
         <div className="w-full flex flex-wrap justify-center">
           <h3 className="w-full text-xl font-bold mb-4 text-center">Ad Copy Generated:</h3>
@@ -93,7 +93,7 @@ const Loader = () => {
               Go Back
             </button>
           </div>
-          <p className="text-gray-600 mt-4">Time taken: {timeTaken.toFixed(2)} ms</p> {/* Display time taken */}
+          <p className="text-gray-600 mt-4">Time taken: {timeTaken.toFixed(2)} ms</p>
         </div>
       ) : (
         <div className="bg-white p-10 rounded-lg shadow-lg text-center max-w-md w-full border border-gray-200">
