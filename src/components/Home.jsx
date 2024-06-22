@@ -9,8 +9,16 @@ const Home = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!link) {
+    if (!link) {  
       setError('Please provide a valid link');
+      setTimeout(() => setError(''), 3000); // Clear error after 3 seconds
+      return;
+    }
+
+    const urlPattern = /^(https?:\/\/)(www\.)([a-z0-9\.-]+\.[a-z]{2,3})(\/[a-z0-9\.-]*)*\/?$/;
+    if (!urlPattern.test(link)) {
+      setError('Please provide a valid URL in the format https://www.example.com');
+      setTimeout(() => setError(''), 3000); // Clear error after 3 seconds
       return;
     }
     navigate('/ad-copy');
@@ -22,6 +30,7 @@ const Home = () => {
     } catch (error) {
       console.error('Error submitting link:', error);
       setError('Error submitting link. Please try again.');
+      setTimeout(() => setError(''), 3000); // Clear error after 3 seconds
     }
   };
 
